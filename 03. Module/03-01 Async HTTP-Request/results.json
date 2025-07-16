@@ -1,0 +1,7 @@
+{
+    "https://nonexistent.url": 1,
+    "https://sde-resume.ru": 200,
+    "https://httpbin.org/status/404": 404,
+    "https://google.com": 200,
+    "https://example.com": 200
+}
