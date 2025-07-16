@@ -9,13 +9,18 @@ from datetime import datetime
 
 class MyMeta(type):
     def __new__(cls, name, bases, attrs):
-        attrs["created_at"] = datetime.now()
-        return super().__new__(cls, name, bases, attrs)
+        new_class = super().__new__(cls, name, bases, attrs)
+        new_class.created_at = datetime.now()
+        return new_class
 
 
-class Test(metaclass=MyMeta): ...
+class Test(metaclass=MyMeta):
+    def __init__(self, some_value):
+        self.some_value = some_value
 
 
 if __name__ == "__main__":
-    obj = Test()
+    obj = Test("1")
+    obj1 = Test("2")
     print(obj.created_at)
+    print(obj1.created_at)
