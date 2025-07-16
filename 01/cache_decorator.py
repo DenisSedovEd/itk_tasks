@@ -10,23 +10,23 @@
 
 import unittest.mock
 from collections import OrderedDict
+from functools import wraps
 
 
 def lru_cache(*args, **kwargs):
     def decorator(func):
-        cache = OrderedDict()
         maxsize = kwargs.get("maxsize")
+        cache = OrderedDict()
 
-        def wrapper(*args, **kwargs):
-            key = (args, frozenset(sorted(kwargs.items())))
+        def wrapper(*deco_args, **deco_kwargs):
+            key = (deco_args, frozenset(deco_kwargs.items()))
             if key in cache:
                 cache.move_to_end(key)
                 return cache[key]
-
-            result = func(*args, **kwargs)
+            result = func(*deco_args, **deco_kwargs)
             cache[key] = result
 
-            if maxsize and len(cache) >= maxsize:
+            if maxsize and maxsize < len(cache):
                 cache.popitem(last=False)
 
             return result
