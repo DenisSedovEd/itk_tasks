@@ -1,0 +1,137 @@
+{
+  "url": "https://nonexistent.url\n",
+  "error": "Cannot connect to host nonexistent.url:443 ssl:default [getaddrinfo failed]"
+}{
+  "url": "https://app.itk.academy/main\n",
+  "content": {
+    "status": 200,
+    "headers": {
+      "Server": "nginx/1.18.0 (Ubuntu)",
+      "Date": "Thu, 17 Jul 2025 02:59:04 GMT",
+      "Content-Type": "text/html",
+      "Last-Modified": "Wed, 15 Jan 2025 13:50:10 GMT",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Vary": "Accept-Encoding",
+      "Etag": "W/\"6787bd12-361\"",
+      "Expires": "Thu, 17 Jul 2025 03:59:04 GMT",
+      "Cache-Control": "max-age=3600",
+      "Content-Encoding": "gzip"
+    },
+    "content_type": "text/html",
+    "url": "https://app.itk.academy/main",
+    "history": [],
+    "version": [
+      1,
+      1
+    ]
+  }
+}{
+  "url": "https://habr.com/ru/feed/",
+  "content": {
+    "status": 200,
+    "headers": {
+      "Server": "QRATOR",
+      "Date": "Thu, 17 Jul 2025 02:59:04 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Transfer-Encoding": "chunked",
+      "Connection": "keep-alive",
+      "Keep-Alive": "timeout=15",
+      "Vary": "Accept-Encoding",
+      "X-DNS-Prefetch-Control": "off",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-Download-Options": "noopen",
+      "X-Content-Type-Options": "nosniff",
+      "X-XSS-Protection": "1; mode=block",
+      "Etag": "W/\"4e152-20hWKoUqQghVny9ipsKxOH669Bo\"",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+      "X-Request-Id": "e2fa945c4503c6054276018a82b240fe",
+      "X-Request-Geoip-Country-Code": "FR",
+      "X-Request-Detected-Device": "desktop",
+      "Content-Encoding": "gzip"
+    },
+    "content_type": "text/html",
+    "url": "https://habr.com/ru/feed/",
+    "history": [],
+    "version": [
+      1,
+      1
+    ]
+  }
+}{
+  "url": "https://google.com\n",
+  "content": {
+    "status": 200,
+    "headers": {
+      "Date": "Thu, 17 Jul 2025 02:59:04 GMT",
+      "Expires": "-1",
+      "Cache-Control": "private, max-age=0",
+      "Content-Type": "text/html; charset=ISO-8859-1",
+      "Content-Security-Policy-Report-Only": "object-src 'none';base-uri 'self';script-src 'nonce-PorJcMP2-Zw3txmsoI03yw' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp",
+      "Accept-CH": "Sec-CH-Prefers-Color-Scheme",
+      "P3P": "CP=\"This is not a P3P policy! See g.co/p3phelp for more info.\"",
+      "Content-Encoding": "gzip",
+      "Server": "gws",
+      "X-XSS-Protection": "0",
+      "X-Frame-Options": "SAMEORIGIN",
+      "Set-Cookie": "SOCS=CAAaBgiA-uDDBg; expires=Sun, 16-Aug-2026 02:59:04 GMT; path=/; domain=.google.com; Secure; SameSite=lax",
+      "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "Transfer-Encoding": "chunked"
+    },
+    "content_type": "text/html",
+    "url": "https://www.google.com/",
+    "history": [
+      "https://google.com"
+    ],
+    "version": [
+      1,
+      1
+    ]
+  }
+}{
+  "url": "https://example.com\n",
+  "content": {
+    "status": 200,
+    "headers": {
+      "Accept-Ranges": "bytes",
+      "Content-Type": "text/html",
+      "Etag": "\"84238dfc8092e5d9c0dac8ef93371a07:1736799080.121134\"",
+      "Last-Modified": "Mon, 13 Jan 2025 20:11:20 GMT",
+      "Vary": "Accept-Encoding",
+      "Content-Encoding": "gzip",
+      "Cache-Control": "max-age=2097",
+      "Date": "Thu, 17 Jul 2025 02:59:04 GMT",
+      "Alt-Svc": "h3=\":443\"; ma=93600,h3-29=\":443\"; ma=93600",
+      "Content-Length": "648",
+      "Connection": "keep-alive"
+    },
+    "content_type": "text/html",
+    "url": "https://example.com",
+    "history": [],
+    "version": [
+      1,
+      1
+    ]
+  }
+}{
+  "url": "https://httpbin.org/status/404\n",
+  "content": {
+    "status": 404,
+    "headers": {
+      "Date": "Thu, 17 Jul 2025 02:59:04 GMT",
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": "0",
+      "Connection": "keep-alive",
+      "Server": "gunicorn/19.9.0",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true"
+    },
+    "content_type": "text/html",
+    "url": "https://httpbin.org/status/404",
+    "history": [],
+    "version": [
+      1,
+      1
+    ]
+  }
+}
