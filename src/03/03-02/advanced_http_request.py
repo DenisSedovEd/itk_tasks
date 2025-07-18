@@ -52,7 +52,8 @@ async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
                     # "status": response.status,
                     # "headers": dict(response.headers),
                     # "content_type": response.content_type,
-                    'text': await response.json(content_type="application/json"),
+                    # 'text': await response.json(content_type="application/json"),
+                    'text': await response.text(),
                     # "url": str(response.url),
                     # "history": [str(r.url) for r in response.history],
                     # "version": response.version,
@@ -68,12 +69,17 @@ async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
         }
 
 
+# async def worker(url: str) -> dict:
+#     async with aiohttp.ClientSession() as session:
+#
+
+
 async def fetch_urls(in_file_path: str, uot_file_path: str):
     urls = await read_file(in_file_path)
     queue = asyncio.Queue()
     result = []
-    for url in urls:
-        await queue.put(url)
+    for q_url in urls:
+        await queue.put(q_url)
 
     async def worker():
         async with aiohttp.ClientSession() as session:
@@ -82,6 +88,7 @@ async def fetch_urls(in_file_path: str, uot_file_path: str):
                 res = await fetch_url(session, url)
                 result.append(res)
                 queue.task_done()
+        return res
 
     workers = [asyncio.create_task(worker()) for _ in range(5)]
     await queue.join()
