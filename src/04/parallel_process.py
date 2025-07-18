@@ -6,12 +6,12 @@
 - Ручные процессы с multiprocessing.Queue
 """
 
-import math
 import json
+import math
 import multiprocessing
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-from random import randint
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from datetime import datetime
+from random import randint
 
 
 def generate_data(n):
@@ -90,4 +90,4 @@ def main(n):
 
 
 if __name__ == "__main__":
-    main(100000)
+    main(100)

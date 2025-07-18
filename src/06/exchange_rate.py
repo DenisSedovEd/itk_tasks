@@ -12,7 +12,7 @@
 
 import json
 import urllib.request
-from urllib.error import URLError, HTTPError
+from urllib.error import HTTPError
 from wsgiref.simple_server import make_server
 
 

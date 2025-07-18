@@ -10,7 +10,6 @@
 
 import unittest.mock
 from collections import OrderedDict
-from functools import wraps
 
 
 def lru_cache(*args, **kwargs):

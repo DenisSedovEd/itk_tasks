@@ -49,13 +49,13 @@ async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
                     timeout=aiohttp.ClientTimeout(total=10),
             ) as response:
                 content = {
-                    "status": response.status,
-                    "headers": dict(response.headers),
-                    "content_type": response.content_type,
-                    # 'text': await response.text(),
-                    "url": str(response.url),
-                    "history": [str(r.url) for r in response.history],
-                    "version": response.version,
+                    # "status": response.status,
+                    # "headers": dict(response.headers),
+                    # "content_type": response.content_type,
+                    'text': await response.json(content_type="application/json"),
+                    # "url": str(response.url),
+                    # "history": [str(r.url) for r in response.history],
+                    # "version": response.version,
                 }
                 return {
                     "url": url,
@@ -66,8 +66,6 @@ async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
             "url": url,
             "error": str(e),
         }
-
-
 
 
 async def fetch_urls(in_file_path: str, uot_file_path: str):
@@ -84,7 +82,6 @@ async def fetch_urls(in_file_path: str, uot_file_path: str):
                 res = await fetch_url(session, url)
                 result.append(res)
                 queue.task_done()
-
 
     workers = [asyncio.create_task(worker()) for _ in range(5)]
     await queue.join()
