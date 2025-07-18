@@ -11,10 +11,10 @@
 """
 
 import asyncio
-import aiohttp
 import json
 
-from aiohttp import ClientTimeout, ClientError
+import aiohttp
+from aiohttp import ClientError, ClientTimeout
 
 urls = [
     "https://example.com",
