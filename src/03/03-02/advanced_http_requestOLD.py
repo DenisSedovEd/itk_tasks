@@ -14,12 +14,13 @@
 При внезапной остановке и/или перезапуске скрипта - допустимо скачивание урлов по новой.
 """
 
-import os
-import json
-import aiohttp
 import asyncio
+import json
+import os
+from datetime import datetime
 from typing import Any
-from aiohttp import ClientSession, ClientError
+
+from aiohttp import ClientError, ClientSession
 
 semaphore = asyncio.Semaphore(5)
 
@@ -37,26 +38,27 @@ async def save_results(result: list, file_path: str):
 
 async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
     try:
-        async with session.get(
-            url,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-        ) as response:
-            content = {
-                "status": response.status,
-                "headers": dict(response.headers),
-                "content_type": response.content_type,
-                # 'text': await response.text(),
-                "url": str(response.url),
-                "history": [str(r.url) for r in response.history],
-                "version": response.version,
-            }
-            return {
-                "url": url,
-                "content": content,
-            }
+        async with semaphore:
+            async with session.get(
+                url,
+                headers={
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+            ) as response:
+                content = {
+                    "status": response.status,
+                    # "headers": dict(response.headers),
+                    # "content_type": response.content_type,
+                    # 'text': await response.text(),
+#                     "url": str(response.url),
+#                     "history": [str(r.url) for r in response.history],
+#                     "version": response.version,
+                }
+                return {
+                    "url": url,
+                    "content": content,
+                }
     except (ClientError, asyncio.TimeoutError, json.JSONDecodeError) as e:
         return {
             "url": url,
@@ -64,15 +66,32 @@ async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
         }
 
 
+
+
+
 async def fetch_urls(in_file: str, out_file: str) -> list[dict[str, Any]]:
     urls = await read_urls(in_file)
     results = []
-    async with semaphore:
-        async with aiohttp.ClientSession() as session:
-            tasks = [fetch_url(session, url) for url in urls]
-            for task in asyncio.as_completed(tasks):
-                res = await task
-                results.append(res)
+
+    queue = asyncio.Queue()
+
+
+    for url in urls:
+        await queue.put(url)
+
+    async def worker(worker_session):
+        while not queue.empty():
+            worker_url = await queue.get()
+            res = await fetch_url(worker_session, worker_url)
+            results.append(res)
+            queue.task_done()
+
+    # async with aiohttp.ClientSession() as session:
+    #     workers = [asyncio.create_task(worker(session)) for _ in range(5)]
+    #     await queue.join()
+    #     for w in workers:
+    #         w.cancel()
+    #     await asyncio.gather(*workers, return_exceptions=True)
 
     if results:
         await save_results(results, out_file)
@@ -90,4 +109,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    start_time = datetime.now()
     asyncio.run(main())
+    end_time = datetime.now()
+    print((end_time - start_time).total_seconds())

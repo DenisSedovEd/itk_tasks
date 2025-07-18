@@ -1,0 +1,10 @@
+https://example.com
+https://httpbin.org/status/404
+https://nonexistent.url
+https://google.com
+https://app.itk.academy/main
+https://habr.com/ru/feed/
+https://example.com
+https://httpbin.org/status/404
+https://nonexistent.url
+https://nonexistent.url
