@@ -1,6 +1,6 @@
 {
-    "single_process": 0.001243,
-    "process_multithread": 0.0059,
-    "process_multiprocess": 0.807385,
-    "process_with_queues": 0.61242
+    "single_process": 0.127427,
+    "process_multithread": 0.227871,
+    "process_multiprocess": 2.832618,
+    "process_with_queues": 1.092046
 }

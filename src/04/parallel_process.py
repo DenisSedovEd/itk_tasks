@@ -90,4 +90,4 @@ def main(n):
 
 
 if __name__ == "__main__":
-    main(100)
+    main(10000)
