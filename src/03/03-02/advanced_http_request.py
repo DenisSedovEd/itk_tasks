@@ -17,10 +17,10 @@ import asyncio
 import json
 import os
 from datetime import datetime
-import aiofiles
 
+import aiofiles
 import aiohttp
-from aiohttp import ClientSession, ClientError
+from aiohttp import ClientError, ClientSession
 
 
 async def read_file(file_path: str) -> list[str]:
@@ -37,31 +37,23 @@ async def save_results(result: list, file_path: str):
             await f.write(json.dumps(res, ensure_ascii=False, indent=4))
 
 
-semaphore = asyncio.Semaphore(5)
-
-
 async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
     try:
-        async with semaphore:
-            async with session.get(
-                    url,
-                    headers={"Content-Type": "application/json", "Accept": "application/json", },
-                    timeout=aiohttp.ClientTimeout(total=10),
-            ) as response:
-                content = {
-                    "status": response.status,
-                    "headers": dict(response.headers),
-                    "content_type": response.content_type,
-                    # 'text': await response.json(content_type="application/json"),
-                    # 'text': await response.text(),
-                    # "url": str(response.url),
-                    # "history": [str(r.url) for r in response.history],
-                    # "version": response.version,
-                }
-                return {
-                    "url": url,
-                    "content": content,
-                }
+        async with session.get(
+                url,
+                headers={"Content-Type": "application/json", "Accept": "application/json", },
+                timeout=aiohttp.ClientTimeout(total=10),
+        ) as response:
+            content = {
+                "status": response.status,
+                "headers": dict(response.headers),
+                "content_type": response.content_type,
+                'text': await response.json(content_type="application/json"),
+            }
+            return {
+                "url": url,
+                "content": content,
+            }
     except (ClientError, asyncio.TimeoutError, json.JSONDecodeError) as e:
         return {
             "url": url,
