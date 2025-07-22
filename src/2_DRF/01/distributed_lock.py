@@ -11,11 +11,12 @@ def process_transaction():
     time.sleep(2)
 Параметр max_processing_time указывает на максимально допустимое время работы декорируемой функции.
 '''
-import functools
 import datetime
+import functools
 import time
 
 from redis import Redis
+
 
 class FuncAlreadyRunning(Exception):
     pass

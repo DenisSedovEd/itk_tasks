@@ -21,8 +21,9 @@ if __name__ == '__main__':
     assert q.consume() == {'c': 3}
 '''
 
-import redis
 import json
+
+import redis
 
 
 class RedisQueue:

@@ -1,7 +1,9 @@
-import time
 import datetime
 import threading
-from distributed_lock import single, FuncAlreadyRunning
+import time
+
+from distributed_lock import FuncAlreadyRunning, single
+
 
 @single(max_processing_time=datetime.timedelta(seconds=8))
 def some_func(thread):
@@ -15,7 +17,7 @@ def worker_thread(thread_id, results):
         result = some_func(thread_id)
         results[thread_id] = f"SUCCESS: {result}"
     except FuncAlreadyRunning:
-        results[thread_id] = f"BLOCKED: Function already running"
+        results[thread_id] = "BLOCKED: Function already running"
     except Exception as e:
         results[thread_id] = f"ERROR: {e}"
 
