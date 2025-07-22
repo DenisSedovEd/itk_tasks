@@ -12,6 +12,7 @@ def some_func(thread):
     print(f"Thread {thread} finished...")
     return f"Thread {thread} completed"
 
+
 def worker_thread(thread_id, results):
     try:
         result = some_func(thread_id)
@@ -21,23 +22,24 @@ def worker_thread(thread_id, results):
     except Exception as e:
         results[thread_id] = f"ERROR: {e}"
 
+
 if __name__ == "__main__":
     results = {}
     threads = []
-    
+
     for i in range(4):
-        t = threading.Thread(target=worker_thread, args=(i+1, results))
+        t = threading.Thread(target=worker_thread, args=(i + 1, results))
         threads.append(t)
-    
+
     start_time = time.time()
     for t in threads:
         t.start()
-    
+
     for t in threads:
         t.join()
-    
+
     end_time = time.time()
-    
+
     print(f"\nРезультаты (время выполнения: {end_time - start_time:.2f}s):")
     for thread_id, result in results.items():
         print(f"Thread {thread_id}: {result}")
