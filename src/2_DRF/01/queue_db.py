@@ -1,4 +1,4 @@
-'''
+"""
 Задача - Реализация очереди задач на основе базы данных
 Контекст
 Вам необходимо реализовать функцию, которая будет извлекать задачи из очереди в базе данных в микросервисной системе,
@@ -35,14 +35,14 @@ class TaskQueue(models.Model):
 После извлечения задачи изменяет её статус на in_progress и сохраняет изменения.
 Если задач с состоянием pending нет, функция должна возвращать None.
 Функция должна быть потокобезопасной, то есть должна корректно работать при параллельном доступе из нескольких потоков.
-'''
+"""
 
 from django.db import models, transaction
 
 
 class TaskQueue(models.Model):
     task_name = models.CharField(max_length=255)
-    status = models.CharField(max_length=50, default='pending')  # Статус задачи
+    status = models.CharField(max_length=50, default="pending")  # Статус задачи
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -53,9 +53,14 @@ class TaskQueue(models.Model):
 def fetch_task():
     with transaction.atomic():
         try:
-            task = TaskQueue.objects.select_for_update().filter(status='pending').order_by('created_at').first()
+            task = (
+                TaskQueue.objects.select_for_update()
+                .filter(status="pending")
+                .order_by("created_at")
+                .first()
+            )
             if task:
-                task.status = 'in_progress'
+                task.status = "in_progress"
                 task.save()
             return task
         except Exception:
