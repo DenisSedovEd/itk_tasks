@@ -13,6 +13,7 @@
 Некоторые урлы могут весить до 300-500 мегабайт
 При внезапной остановке и/или перезапуске скрипта - допустимо скачивание урлов по новой.
 """
+
 import asyncio
 import json
 import os
@@ -25,7 +26,7 @@ from aiohttp import ClientError, ClientSession
 
 async def read_file(file_path: str) -> list[str]:
     urls = []
-    async with aiofiles.open(file_path, mode='r', encoding='utf-8') as f:
+    async with aiofiles.open(file_path, mode="r", encoding="utf-8") as f:
         async for line in f:
             urls.append(line.strip())
     return urls
@@ -40,15 +41,18 @@ async def save_results(result: list, file_path: str):
 async def fetch_url(session: ClientSession, url: str) -> (str, dict[str, list]):
     try:
         async with session.get(
-                url,
-                headers={"Content-Type": "application/json", "Accept": "application/json", },
-                timeout=aiohttp.ClientTimeout(total=10),
+            url,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            timeout=aiohttp.ClientTimeout(total=10),
         ) as response:
             content = {
                 "status": response.status,
                 "headers": dict(response.headers),
                 "content_type": response.content_type,
-                'text': await response.json(content_type="application/json"),
+                "text": await response.json(content_type="application/json"),
             }
             return {
                 "url": url,
@@ -97,7 +101,7 @@ async def main():
     await fetch_urls(input_file, output_file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_time = datetime.now()
     asyncio.run(main())
     end_time = datetime.now()
