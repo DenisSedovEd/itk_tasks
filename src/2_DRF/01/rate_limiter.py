@@ -9,56 +9,57 @@
 Ваша реализация должна использовать Redis, т.к. предполагается что приложение работает на нескольких серверах.
 """
 
-import random
 import time
+import random
 
 import redis
-import requests
+from typing import Optional
 
 
 class RateLimitExceed(Exception):
     pass
 
-
 class RateLimiter:
-    def __init__(self, redis_host: str = "localhost", redis_port: int = 6379):
+    def __init__(self, redis_host: str = 'localhost', redis_port: int = 6379,
+                 max_requests: int = 5, time_window: int = 3):
         self.redis = redis.Redis(host=redis_host, port=redis_port, db=0)
-        self.key = "rate_limiter"
-        self.time_limin = 3
-        self.count = 5
+        self.max_requests = max_requests
+        self.time_window = time_window
+        self.key_prefix = "rate_limit:"
 
-    def test(self) -> bool:
-        current_time = int(time.time())
+    def test(self, client_id: str) -> bool:
+        key = f"{self.key_prefix}{client_id}"
+        current_time = time.time()
 
-        timestamps = self.redis.lrange(self.key, 0, -1)
-        timestamps = [int(ts) for ts in timestamps]
+        with self.redis.pipeline() as pipe:
+            pipe.watch(key)
 
-        cutoff_time = current_time - self.time_limin
-        timestamps = [ts for ts in timestamps if ts > cutoff_time]
+            pipe.multi()
+            pipe.zremrangebyscore(key, 0, current_time - self.time_window)
+            pipe.zcard(key)
+            _, count = pipe.execute()
 
-        self.redis.delete(self.key)
-        for ts in timestamps:
-            self.redis.rpush(self.key, ts)
-
-        if len(timestamps) < self.count:
-            self.redis.rpush(self.key, current_time)
-            return True
-        else:
+            if count < self.max_requests:
+                pipe.multi()
+                pipe.zadd(key, {f"{current_time}:{time.time_ns()}": current_time})
+                pipe.expire(key, self.time_window)
+                pipe.execute()
+                return True
             return False
 
 
+
 def make_api_request(rate_limiter: RateLimiter):
-    if not rate_limiter.test():
+    if not rate_limiter.test('123'):
         raise RateLimitExceed
     else:
-        request = requests.get("https://google.cm")
-        return request
+        pass
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     rate_limiter = RateLimiter()
 
-    for _ in range(20):
+    for _ in range(50):
         time.sleep(random.randint(1, 2))
 
         try:
