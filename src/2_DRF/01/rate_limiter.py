@@ -19,6 +19,7 @@ from typing import Optional
 class RateLimitExceed(Exception):
     pass
 
+
 class RateLimiter:
     def __init__(self, redis_host: str = 'localhost', redis_port: int = 6379,
                  max_requests: int = 5, time_window: int = 3):
@@ -46,7 +47,6 @@ class RateLimiter:
                 pipe.execute()
                 return True
             return False
-
 
 
 def make_api_request(rate_limiter: RateLimiter):
