@@ -1,17 +1,20 @@
-import time
 import threading
+import time
+
 import pytest
-from redis import Redis
 from rate_limiter import RateLimiter
+from redis import Redis
 
 
 class TestRateLimiter:
     @pytest.fixture(autouse=True)
     def setup(self):
-        self.redis = Redis(host='localhost', port=6379, db=0)
+        self.redis = Redis(host="localhost", port=6379, db=0)
         self.redis.flushdb()  # Clean Redis before each test
         self.client_id = "test_client"
-        self.rate_limiter = RateLimiter(max_requests=3, time_window=2)  # 3 requests per 2 seconds
+        self.rate_limiter = RateLimiter(
+            max_requests=3, time_window=2
+        )  # 3 requests per 2 seconds
 
     def test_single_request_allowed(self):
         assert self.rate_limiter.test(self.client_id) is True

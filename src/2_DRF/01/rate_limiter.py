@@ -9,11 +9,10 @@
 Ваша реализация должна использовать Redis, т.к. предполагается что приложение работает на нескольких серверах.
 """
 
-import time
 import random
+import time
 
 import redis
-from typing import Optional
 
 
 class RateLimitExceed(Exception):
@@ -21,8 +20,13 @@ class RateLimitExceed(Exception):
 
 
 class RateLimiter:
-    def __init__(self, redis_host: str = 'localhost', redis_port: int = 6379,
-                 max_requests: int = 5, time_window: int = 3):
+    def __init__(
+        self,
+        redis_host: str = "localhost",
+        redis_port: int = 6379,
+        max_requests: int = 5,
+        time_window: int = 3,
+    ):
         self.redis = redis.Redis(host=redis_host, port=redis_port, db=0)
         self.max_requests = max_requests
         self.time_window = time_window
@@ -50,13 +54,13 @@ class RateLimiter:
 
 
 def make_api_request(rate_limiter: RateLimiter):
-    if not rate_limiter.test('123'):
+    if not rate_limiter.test("123"):
         raise RateLimitExceed
     else:
         pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     rate_limiter = RateLimiter()
 
     for _ in range(50):
