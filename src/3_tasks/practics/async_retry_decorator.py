@@ -4,7 +4,7 @@ import functools
 
 def async_retry(*args, **kwargs):
     retries = kwargs.pop('retries', 1)
-    exceptions = kwargs.pop('exceptions', (Exception,))
+    exceptions = kwargs.pop('exceptions', ())
     def deco(func):
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
@@ -18,11 +18,8 @@ def async_retry(*args, **kwargs):
                         print(f'Retrying {func.__name__} ({attempt}/{retries})...')
                     continue
             raise last_exception
-
         return wrapper
-
     return deco
-
 
 
 
