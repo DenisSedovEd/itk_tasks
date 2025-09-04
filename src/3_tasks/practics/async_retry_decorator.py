@@ -1,11 +1,12 @@
 import asyncio
 import functools
+from typing import Callable
 
 
-def async_retry(*args, **kwargs):
+def async_retry(*args, **kwargs) -> Callable:
     retries = kwargs.pop('retries', 1)
     exceptions = kwargs.pop('exceptions', ())
-    def deco(func):
+    def deco(func: Callable) -> Callable:
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
             last_exception = None
