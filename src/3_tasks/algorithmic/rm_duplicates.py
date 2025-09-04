@@ -15,6 +15,7 @@ def rm_duplicates(nums: list[int]) -> Any:
             flag += 1
     return [flag, nums[0:flag]]
 
+
 if __name__ == "__main__":
     assert rm_duplicates([1, 2, 3, 4]) == [4, [1, 2, 3, 4]]
     assert rm_duplicates([1, 1, 2, 2, 3, 4, 4, 5]) == [5, [1, 2, 3, 4, 5]]

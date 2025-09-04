@@ -4,8 +4,9 @@ from typing import Callable
 
 
 def async_retry(*args, **kwargs) -> Callable:
-    retries = kwargs.pop('retries', 1)
-    exceptions = kwargs.pop('exceptions', ())
+    retries = kwargs.pop("retries", 1)
+    exceptions = kwargs.pop("exceptions", ())
+
     def deco(func: Callable) -> Callable:
         @functools.wraps(func)
         async def wrapper(*args, **kwargs):
@@ -16,18 +17,20 @@ def async_retry(*args, **kwargs) -> Callable:
                 except exceptions as e:
                     last_exception = e
                     if attempt <= retries:
-                        print(f'Retrying {func.__name__} ({attempt}/{retries})...')
+                        print(f"Retrying {func.__name__} ({attempt}/{retries})...")
                     continue
             raise last_exception
-        return wrapper
-    return deco
 
+        return wrapper
+
+    return deco
 
 
 @async_retry(retries=5, exceptions=(ValueError,))
 async def unstable_task():
     print("Running task...")
     raise ValueError("Something went wrong")
+
 
 async def main():
     try:
@@ -36,6 +39,5 @@ async def main():
         print(f"Final failure: {e}")
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())
